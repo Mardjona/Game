@@ -1,0 +1,98 @@
+class GameCharacter
+{
+    string Name;
+    int MaxHP; // маскимальное число жизней
+    int CurrentHP; // текущее число жизней
+    int Punch; // сила удара
+    bool Team; //команда
+    int direction; // направление движения: 0-влево, 1- вверх, 2 - вправо, 3 - вниз
+    int CorX; // координата х
+    int CorY; // координата у 
+    int Pobeda; // победа в драках (для восстановления здоровья)
+    List<GameCharacter> characters = new List<GameCharacter>();
+
+    //public GameCharacter(string name, int maxHP, int currentXP, int punch, bool team, int corX, int corY, int pobeda)
+    public GameCharacter()
+    {
+        Name = "";
+        MaxHP = 0;
+        CurrentHP = 0;
+        Punch = 0;
+        Team = true;
+        CorX = 0;
+        CorY = 0;
+        Pobeda = 0;
+
+    
+}
+public void InfoIn()
+{
+        Console.WriteLine("Чтобы начать игру нужно создать минимум двух персонажей.");
+        Person("", characters);
+        Lager();
+        Health();
+        Move();
+        if (GameCharacter.)
+}
+
+   
+    public string Person(string name, List<GameCharacter> characters)
+    {
+        Console.WriteLine("Введите имя игрока:");
+        Name = Console.ReadLine();
+
+
+        foreach (GameCharacter p in characters)
+        {
+            if (name == p.Name)
+            {
+                Console.WriteLine("Это имя уже существует");
+                return name;
+
+            }
+            else
+            {
+                return Name;
+            }
+        }
+        return Name;
+
+
+    }
+
+    public bool Lager ()
+    {
+        Console.Write("Выберите команду 1 или 2: ");
+        int  choice = Convert.ToInt32(Console.ReadLine());
+
+        if ( choice == 1)
+        {
+            Console.WriteLine("Вы участник команды союзников.");
+            return choice == 1;
+            
+        }
+        else
+        {
+            Console.WriteLine("Вы участник вражеской команды");
+            return choice == 2;
+
+        }
+    }
+    
+    
+    public int Health()
+    {
+        Console.WriteLine("Введите количество здоровья, не меньше 0, не больше 100: ");
+         MaxHP = Convert.ToInt32(Console.ReadLine());
+        return MaxHP;
+    }
+     public void Move()
+    {
+        Console.WriteLine("Расположите персонажа на поле");
+        Console.Write("Введите координату Х:");
+        CorX = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Введите координату Y: ");
+        CorY = Convert.ToInt32(Console.ReadLine());
+    }
+
+}
