@@ -1,98 +1,85 @@
+using System;
+
 class GameCharacter
 {
-    string Name;
-    int MaxHP; // маскимальное число жизней
-    int CurrentHP; // текущее число жизней
-    int Punch; // сила удара
-    bool Team; //команда
-    int direction; // направление движения: 0-влево, 1- вверх, 2 - вправо, 3 - вниз
-    int CorX; // координата х
-    int CorY; // координата у 
-    int Pobeda; // победа в драках (для восстановления здоровья)
-    List<GameCharacter> characters = new List<GameCharacter>();
+    // Свойства класса
+     string Name { get; set; }
+     int MaxHealth { get; set; }
+     int CurrentHealth { get; set; }
+     bool IsAlly { get; set; }
+     int Coordinate { get; set; }
+     int Wins { get; set; }
 
-    //public GameCharacter(string name, int maxHP, int currentXP, int punch, bool team, int corX, int corY, int pobeda)
-    public GameCharacter()
+    // Методы класса
+    public void InputInformation()
     {
-        Name = "";
-        MaxHP = 0;
-        CurrentHP = 0;
-        Punch = 0;
-        Team = true;
-        CorX = 0;
-        CorY = 0;
-        Pobeda = 0;
-
-    
-}
-public void InfoIn()
-{
-        Console.WriteLine("Чтобы начать игру нужно создать минимум двух персонажей.");
-        Person("", characters);
-        Lager();
-        Health();
-        Move();
-        if (GameCharacter.)
-}
-
-   
-    public string Person(string name, List<GameCharacter> characters)
-    {
-        Console.WriteLine("Введите имя игрока:");
+        Console.WriteLine("Введите информацию о персонаже:");
+        Console.Write("Имя: ");
         Name = Console.ReadLine();
-
-
-        foreach (GameCharacter p in characters)
-        {
-            if (name == p.Name)
-            {
-                Console.WriteLine("Это имя уже существует");
-                return name;
-
-            }
-            else
-            {
-                return Name;
-            }
-        }
-        return Name;
-
-
+        Console.Write("Максимальное здоровье: ");
+        MaxHealth = int.Parse(Console.ReadLine());
+        CurrentHealth = MaxHealth;
+        Console.Write("Принадлежность к лагерю (true - союзник, false - враг): ");
+        IsAlly = bool.Parse(Console.ReadLine());
+        Console.Write("Расположение в координате: ");
+        Coordinate = int.Parse(Console.ReadLine());
+        Wins = 0;
     }
 
-    public bool Lager ()
+    public void DisplayInformation()
     {
-        Console.Write("Выберите команду 1 или 2: ");
-        int  choice = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Информация о персонаже:");
+        Console.WriteLine($"Имя: {Name}");
+        Console.WriteLine($"Максимальное здоровье: {MaxHealth}");
+        Console.WriteLine($"Текущее здоровье: {CurrentHealth}");
+        Console.WriteLine($"Принадлежность к лагерю: {(IsAlly ? "Союзник" : "Враг")}");
+        Console.WriteLine($"Расположение в координате: {Coordinate}");
+        Console.WriteLine($"Количество побед: {Wins}");
+    }
 
-        if ( choice == 1)
+    public bool IsInSameCoordinate(GameCharacter otherCharacter)
+    {
+        return Coordinate == otherCharacter.Coordinate;
+    }
+
+    public void Attack(GameCharacter enemy)
+    {
+        Console.WriteLine($"Персонаж {Name} атакует персонажа {enemy.Name}");
+        enemy.CurrentHealth -= 10;
+        if (enemy.CurrentHealth <= 0)
         {
-            Console.WriteLine("Вы участник команды союзников.");
-            return choice == 1;
-            
+            enemy.CurrentHealth = 0;
+            enemy.Wins++;
+        }
+        Console.WriteLine($"Персонаж {enemy.Name} получает урон, текущее здоровье: {enemy.CurrentHealth}");
+    }
+
+    public void RestoreHealth()
+    {
+        if (Wins >= 5)
+        {
+            Console.WriteLine($"Персонаж {Name} использовал полное лечение.");
+            CurrentHealth = MaxHealth;
         }
         else
         {
-            Console.WriteLine("Вы участник вражеской команды");
-            return choice == 2;
-
+            Console.WriteLine("Недостаточно побед для использования полного лечения.");
         }
     }
-    
-    
-    public int Health()
-    {
-        Console.WriteLine("Введите количество здоровья, не меньше 0, не больше 100: ");
-         MaxHP = Convert.ToInt32(Console.ReadLine());
-        return MaxHP;
-    }
-     public void Move()
-    {
-        Console.WriteLine("Расположите персонажа на поле");
-        Console.Write("Введите координату Х:");
-        CorX = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Введите координату Y: ");
-        CorY = Convert.ToInt32(Console.ReadLine());
-    }
 
+    public void Heal(GameCharacter teammate)
+    {
+        if (IsAlly && IsInSameCoordinate(teammate))
+        {
+            Console.WriteLine($"Персонаж {Name} лечит персонажа {teammate.Name}");
+            int healAmount = Math.Min(CurrentHealth, teammate.MaxHealth - teammate.CurrentHealth);
+            CurrentHealth -= healAmount;
+            teammate.CurrentHealth += healAmount;
+            Console.WriteLine($"Персонаж {teammate.Name} восстановил здоровье на {healAmount}, текущее здоровье: {teammate.CurrentHealth}");
+        }
+        else
+        {
+            Console.WriteLine("Невозможно применить лечение к данному персонажу.");
+        }
+    }
 }
