@@ -1,35 +1,36 @@
-﻿class Program
+using System;
+using System.Collections.Generic;
+using System.Numerics;
+public class Program
 {
-    static void Main(string[] args)
+    public static void Main()
     {
-        Console.Write("Введите количество игроков: ");
-        int playerCount = int.Parse(Console.ReadLine());
+        Console.WriteLine("Введите количество персонажей: ");
+        int characterCount = int.Parse(Console.ReadLine());
 
-        if (playerCount >= 2)
+        if (characterCount >= 2)
         {
-            GameCharacter[] players = new GameCharacter[playerCount];
+            List<GameCharacter> characters = new List<GameCharacter>();
 
-            for (int i = 0; i < playerCount; i++)
+            for (int i = 0; i < characterCount; i++)
             {
-                players[i] = new GameCharacter();
-                players[i].InputInformation();
+                Console.WriteLine("Введите информацию о персонаже " + (i + 1));
+                GameCharacter character = new GameCharacter();
+                character.InputInformation();
+                characters.Add(character);
             }
-
-            Console.WriteLine("Игра началась!");
-
-            // Пример использования методов класса
-            players[0].Attack(players[1]);
-
-            players[0].RestoreHealth();
-
-            players[0].Heal(players[1]);
-
-            players[0].DisplayInformation();
-            players[1].DisplayInformation();
+            Console.Write("Выберете персонажа: ");
+            int ans = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Игра начинается!");
+            characters[ans].PlayGame(characters);  // Пример вызова игры для первого персонажа
         }
         else
         {
-            Console.WriteLine("Недостаточно игроков для начала игры.");
+            Console.WriteLine("Для начала игры нужно создать минимум двух игроков!");
         }
     }
 }
+
+
+
+
