@@ -73,8 +73,10 @@ class GameCharacter
                 // Если здоровье врага становится меньше или равно 0, то он побеждён
                 if (enemy.CurrentHealth <= 0)
                 {
-                    Console.WriteLine("Вы победили врага!");
-                    this.Wins++;
+                     this.Wins++;
+                    Console.WriteLine("Вы победили врага " + Wins + " раз(а)");
+                   
+                    Console.ReadKey();
                 }
                 else
                 {
