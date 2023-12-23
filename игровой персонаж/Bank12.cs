@@ -94,24 +94,23 @@ private void Fight(List<GameCharacter> characters)
         }
     }
 
-    private void Move(List<GameCharacter> characters)
-    {
-        Console.WriteLine("Введите координату X для перемещения: ");
-        int newX = int.Parse(Console.ReadLine());
-        Console.WriteLine("Введите координату Y для перемещения: ");
-        int newY = int.Parse(Console.ReadLine());
-
-        // Проверки доступности перемещения и обновление координат
-        if (CanMove(newX, newY))
+private void Move(List<GameCharacter> characters, int x, int y)
         {
-            CoorX = newX;
-            CoorX = newY;
-            Console.WriteLine("Перемещение успешно!");
-        }
-        else
-        {
-            Console.WriteLine("Позиция занята или перемещение невозможно!");
-        }
+        Console.Write("Введите новую координату X:");
+        x = int.Parse(Console.ReadLine());
+        Console.WriteLine("Введите новую координату Y:");
+        y = int.Parse(Console.ReadLine());
+        int previousX = CoorX;
+        int previousY = CoorY;
+        CoorX = x;
+        CoorY = y;
+        foreach (GameCharacter character in characters)
+            if( character != this && character.CoorX == CoorX && character.CoorY==CoorY)
+            {
+                Fight(characters);
+                break;
+            }
+        Console.WriteLine( $"Персонаж { Name} переместился с координат {previousX},{previousY} на {CoorX},{CoorY}");
     }
     
 
