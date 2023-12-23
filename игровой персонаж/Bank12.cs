@@ -59,7 +59,7 @@ class GameCharacter
         }
     }
     // Драка с врагом
-private void Fight(List<GameCharacter> characters)
+
 private void Fight(List<GameCharacter> characters)
     {
         foreach( GameCharacter ally in characters )
