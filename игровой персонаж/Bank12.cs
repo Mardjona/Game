@@ -59,13 +59,16 @@ class GameCharacter
         }
     }
     // Драка с врагом
-   private void Fight(List<GameCharacter> characters)
+private void Fight(List<GameCharacter> characters)
     {
-       foreach (GameCharacter enemy in characters)
-        {
-            // Проверяем, является ли враг персонажем в той же точке поля
-            if (this.CoorX == enemy.CoorX && this.CoorY == enemy.CoorY && enemy != this)
-            {
+        foreach( GameCharacter ally in characters )
+        foreach (GameCharacter enemy in characters)
+        { //проверяем является ли союзник в той же точке что и враг
+
+                    // Проверяем, является ли враг в той же точке поля что и союзник
+
+                    if (ally.CoorX == enemy.CoorX && ally.CoorY == ally.CoorY && enemy != ally && enemy.IsAlly !=ally.IsAlly)
+                    {
                 Console.WriteLine("Драка началась!");
                 // Применяем урон врагу
 
@@ -73,20 +76,21 @@ class GameCharacter
                 // Если здоровье врага становится меньше или равно 0, то он побеждён
                 if (enemy.CurrentHealth <= 0)
                 {
-                     this.Wins++;
+                    this.Wins++;
                     Console.WriteLine("Вы победили врага " + Wins + " раз(а)");
-                   
+
                     Console.ReadKey();
                 }
                 else
-                {
-                    Console.WriteLine($"Оставшееся здоровье врага: {enemy.CurrentHealth}");
-                }
+                Console.WriteLine($"Оставшееся здоровье врага: {enemy.CurrentHealth}");
+                Console.ReadKey();
             }
-            else
+            else if (this.CoorX == ally.CoorX && this.CoorY == ally.CoorX && ally != enemy && ally.IsAlly == IsAlly)
             {
-                Console.WriteLine("Враг находится в другой точке поля");
+                Console.WriteLine("На поле ваш союзник ");
             }
+
+
         }
     }
 
