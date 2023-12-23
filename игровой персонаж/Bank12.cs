@@ -115,13 +115,7 @@ private void Move(List<GameCharacter> characters, int x, int y)
     }
     
 
-    private bool CanMove(int newX, int newY)
-    {
-        // Логика проверки доступности перемещения на основе текущего состояния игрового поля и других игроков
-        // Вернуть true, если перемещение возможно, и false, если запрещено
-        return true;
-    }
-    //  полное воссстановление 
+
     void RestoreHealth()
     {
         if (Wins >= 5)
