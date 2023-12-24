@@ -13,32 +13,24 @@ class GameCharacter
     private int Wins { get; set; }
     private double Damage;
 
-    public GameCharacter()
-    {
-        Name = "";
-        MaxHealth = 0;
-        CurrentHealth = 0;
-        this.IsAlly = IsAlly;
-        this.CoorX = CoorX;
-        this.CoorY = CoorY;
-        Wins = 0;
-        Damage = MaxHealth * 0.4;
-    }
+    public GameCharacter() => InputInformation();
      // метод ввода информации
     public void InputInformation()
     {
-        // Console.WriteLine("Введите информацию о персонаже:");
         Console.Write("Имя персонажа: ");
         Name = Console.ReadLine();
         Console.Write("Максимальное здоровье: ");
-        this.MaxHealth = int.Parse(Console.ReadLine());
-        this.Damage = this.MaxHealth * 0.4;
-        Console.Write("Принадлежность к лагерю (+/-): ");
-        string s = Console.ReadLine();
+        MaxHealth = int.Parse(Console.ReadLine());
+        Damage = MaxHealth * 0.4;
+
+          Console.Write("Принадлежность к лагерю (+/-): ");
+            string s = Console.ReadLine();
         if (s == "+")
             IsAlly = true;
-        else
+        else if (s == "-")
             IsAlly = false;
+        else
+            Console.WriteLine(" Oшибка выбора повторите попытку");
         Console.Write("Координата X: ");
         this.CoorX = int.Parse(Console.ReadLine());
         Console.Write("Координата Y: ");
@@ -48,77 +40,77 @@ class GameCharacter
     void DisplayInformation()
     {
         Console.WriteLine("Информация о персонаже:");
-
-        {
-            Console.WriteLine("Информация о персонаже:");
             Console.WriteLine("Имя: " + Name);
             Console.WriteLine("Максимальное здоровье: " + MaxHealth);
             Console.WriteLine("Текущее здоровье: " + CurrentHealth);
             Console.WriteLine("Принадлежность к лагерю: " + (IsAlly ? "Союзник" : "Враг"));
             Console.WriteLine("Координаты: (" + CoorX + ", " + CoorY + ")");
-        }
+            Console.WriteLine(" Количество побед  " + Wins);
+        
     }
-    // Драка с врагом
-
-          private void Fight(List<GameCharacter> characters)
+    private void Fight(List<GameCharacter> characters)
     {
         foreach (GameCharacter enemy in characters)
         {
-            // Проверяем, кто находится на той же координате что и выбранный перснаж 
-                if (CoorX == enemy.CoorX && CoorY == enemy.CoorY )
+          // Проверяем, кто находится на той же координате что и выбранный перснаж 
+            if (CoorX == enemy.CoorX && CoorY == enemy.CoorY)
+            {
+                if (enemy.IsAlly != IsAlly)
                 {
-                    if (enemy.IsAlly != IsAlly)
-                    {
+                     Console.WriteLine("Драка началась!");
+                    // Применяем урон 
+                    enemy.CurrentHealth -= Damage;
+                    this.CurrentHealth -= enemy.Damage;
+                    Console.WriteLine($"Оставшееся здоровье врага: {enemy.CurrentHealth}");
+                    Console.ReadKey();
 
-                        Console.WriteLine("Драка началась!");
-                        // Применяем урон 
-                        enemy.CurrentHealth -= Damage;
-                        Console.WriteLine($"Оставшееся здоровье врага: {enemy.CurrentHealth}");
+                    if (enemy.CurrentHealth <= 0)
+                    {
+                        Wins++;
+                        Console.WriteLine("Вы победили противника " + Wins + " раз(а)");
+
                         Console.ReadKey();
-                        if (enemy.CurrentHealth <= 0 )
-                        {
-                            Wins++;
-                            Console.WriteLine("Вы победили противника " + Wins + " раз(а)");
-
-                            Console.ReadKey();
-                        }
                     }
-                    else if (IsAlly == IsAlly)
-                    {
-                    Console.WriteLine("Это ваш тиммейт ");
-                    }
-                    else { }
-                    
                 }
-               else
-               {
-                    Console.WriteLine("На этих координатах никого нет");
-               }
+            }
+                    
         }
-        
+              
     }
-private void Move(List<GameCharacter> characters, int x, int y)
-        {
-        Console.Write("Введите новую координату X:");
+    private void Move(List<GameCharacter> characters, int x, int y)
+    {
+        Console.Write("Введите новую координату X: ");
         x = int.Parse(Console.ReadLine());
-        Console.WriteLine("Введите новую координату Y:");
+        Console.Write("Введите новую координату Y: ");
         y = int.Parse(Console.ReadLine());
         int previousX = CoorX;
         int previousY = CoorY;
         CoorX = x;
         CoorY = y;
-        foreach (GameCharacter character in characters)
-            if( character != this && character.CoorX == CoorX && character.CoorY==CoorY)
+        Console.WriteLine($"Персонаж {Name} переместился с координат {previousX},{previousY} на {CoorX},{CoorY}");
+        foreach (GameCharacter enemy in characters)
+        {
+
+            if (x == enemy.CoorX && y == enemy.CoorY)
             {
-                Fight(characters);
-                break;
+                if (enemy.IsAlly == IsAlly && enemy!=this)
+                { Console.WriteLine("Это ваш тиммейт"); }
+                else
+                { Fight(characters); }
+                    
+               
             }
-        Console.WriteLine( $"Персонаж { Name} переместился с координат {previousX},{previousY} на {CoorX},{CoorY}");
+            else 
+            {
+                Console.WriteLine("На этих координатах никого нет");
+            }
+        }
+
+
     }
-    
 
 
-    void RestoreHealth()
+     void RestoreHealth()
     {
         if (Wins >= 5)
         {
@@ -130,9 +122,9 @@ private void Move(List<GameCharacter> characters, int x, int y)
             Console.WriteLine("Недостаточно побед для использования полного лечения.");
         }
     }
-    void Heal(List<GameCharacter> game) // лечение команды 
+    void Heal(List<GameCharacter> characters) // лечение команды 
     {
-        foreach (GameCharacter ally in game)
+        foreach (GameCharacter ally in characters)
         {
             // Проверяем принадлежность команды персонажа к той же команде, что и текущий персонаж
             if (ally.IsAlly == IsAlly)
@@ -155,6 +147,29 @@ private void Move(List<GameCharacter> characters, int x, int y)
             }
         }
     }
+    private void CheckWhoWin(List<GameCharacter> characters)
+    {
+        bool isAnyEnemyAlive = false;
+        bool isAnyAllyAlive = false;
+        foreach ( GameCharacter enemy in characters)
+        foreach (GameCharacter ally in characters)
+        {
+            if(enemy.Wins > ally.Wins)
+                {
+                    Console.WriteLine("Победили враги");
+                }
+            else if (enemy.Wins < ally.Wins)
+                {
+                    Console.WriteLine("Победили союзники");
+                }
+            else
+                {
+                    Console.WriteLine("Ничья");
+                }
+        }
+    }
+
+
 
     private static bool AreAllPlayersDead(List<GameCharacter> characters, bool isAlly)
     {
@@ -168,53 +183,61 @@ private void Move(List<GameCharacter> characters, int x, int y)
 
         return true; // Нет живых игроков из команды
     }
+   
 
-    
-  
-    public void PlayGame(List<GameCharacter> characters)
+    public void PlayGame(List<GameCharacter> characters , int x, int y)
     {
+       
+
         bool isGameActive = true;
-      
+        
         while (isGameActive)
         {
             Console.WriteLine("Выберите действие:");
+            
             Console.WriteLine("0.Перемещение");
             Console.WriteLine("1. драка");
-            Console.WriteLine("2. Лечение");
+            Console.WriteLine("2. Лечение команды");
             Console.WriteLine("3. Закончить игру");
+          
+            Console.WriteLine("5. информация ");
+            Console.WriteLine("6. Победитель");
+            Console.WriteLine("7.Лечение себя");
 
-            int choice = int.Parse(Console.ReadLine());
+
+
+          int choice = int.Parse(Console.ReadLine());
 
             switch (choice)
             {
                 case 0:
-                    Move(characters);
-                    break;
+                    Move(characters, x, y); break;
+                    
                 case 1:
-                    this.Fight(characters);
-                    break;
+                    this.Fight(characters); break;
+
                 case 2:
-                    Heal(characters);
-                    break;
+                    Heal(characters); break;
+
                 case 3:
-                    isGameActive = false;
-                    break;
+                    isGameActive = false; break;
+
+                
+                case 5:
+                    DisplayInformation(); break;
+                case 6:
+                    CheckWhoWin(characters); break;
+                case 7:
+                    RestoreHealth(); break;
+
                 default:
                     Console.WriteLine("Некорректный выбор! Попробуйте снова.");
                     break;
             }
 
-            bool isAllyDead = AreAllPlayersDead(characters, true);
-            bool isEnemyDead = AreAllPlayersDead(characters, false);
-
-            if (isAllyDead || isEnemyDead)
-            {
-                Console.WriteLine("Игра завершена!");
-                isGameActive = false;
-            }
+            
         }
 
        
     }
 }
-
