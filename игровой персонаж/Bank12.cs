@@ -72,8 +72,7 @@ private void Fight(List<GameCharacter> characters)
                 Console.WriteLine("Драка началась!");
                 // Применяем урон 
 
-                enemy.CurrentHealth -= enemy.Damage;
-                    ally.CurrentHealth -= ally.Damage;
+               enemy.CurrentHealth -= ally.Damage;
                 // Если здоровье врага становится меньше или равно 0, то он побеждён
                 if (enemy.CurrentHealth <= 0 || ally.CurrentHealth <=0)
                 {
