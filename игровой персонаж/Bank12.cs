@@ -60,38 +60,48 @@ class GameCharacter
     }
     // Драка с врагом
 
-private void Fight(List<GameCharacter> characters)
+    private void Fight(List<GameCharacter> characters)
     {
-        foreach( GameCharacter ally in characters )
         foreach (GameCharacter enemy in characters)
-        { 
-             // Проверяем, кто находится на той же координате то и выбранный перснаж 
-               if (this.CoorX == enemy.CoorX && this.CoorY == enemy.CoorY && enemy != ally && enemy.IsAlly !=IsAlly ||
-                   this.CoorX == ally.CoorX && this.CoorY == ally.CoorY && ally !=enemy && ally.IsAlly==IsAlly )
-                    {
-                Console.WriteLine("Драка началась!");
-                // Применяем урон 
-
-               enemy.CurrentHealth -= ally.Damage;
-                // Если здоровье врага становится меньше или равно 0, то он побеждён
-                if (enemy.CurrentHealth <= 0 || ally.CurrentHealth <=0)
+        {
+            // Проверяем, кто находится на той же координате что и выбранный перснаж 
+                if (CoorX == enemy.CoorX && CoorY == enemy.CoorY )
                 {
-                    this.Wins++;
-                    Console.WriteLine("Вы победили врага " + Wins + " раз(а)");
+                    if (enemy.IsAlly != IsAlly)
+                    {
 
-                    Console.ReadKey();
+                        Console.WriteLine("Драка началась!");
+                        // Применяем урон 
+                        enemy.CurrentHealth -= this.Damage;
+                        Console.WriteLine($"Оставшееся здоровье врага: {enemy.CurrentHealth}");
+                        Console.ReadKey();
+                        if (enemy.CurrentHealth <= 0 || CurrentHealth <= 0)
+                        {
+                            Wins++;
+                            Console.WriteLine("Вы победили противника " + Wins + " раз(а)");
+
+                            Console.ReadKey();
+                        }
+                    }
+                    else
+                    Console.WriteLine("Врагов нет");
+                
+
+                
+
                 }
+              
                 else
-                Console.WriteLine($"Оставшееся здоровье врага: {enemy.CurrentHealth}");
-                Console.ReadKey();
-            }
-            else if (this.CoorX == ally.CoorX && this.CoorY == ally.CoorX && ally != enemy && ally.IsAlly == IsAlly)
-            {
-                Console.WriteLine("На поле ваш союзник ");
-            }
+                {
+                    Console.WriteLine("На этих координатах никого нет");
+                }
+
+
+
 
 
         }
+        
     }
 
 private void Move(List<GameCharacter> characters, int x, int y)
