@@ -60,7 +60,7 @@ class GameCharacter
     }
     // Драка с врагом
 
-        private void Fight(List<GameCharacter> characters)
+          private void Fight(List<GameCharacter> characters)
     {
         foreach (GameCharacter enemy in characters)
         {
@@ -72,10 +72,10 @@ class GameCharacter
 
                         Console.WriteLine("Драка началась!");
                         // Применяем урон 
-                        enemy.CurrentHealth -= this.Damage;
+                        enemy.CurrentHealth -= Damage;
                         Console.WriteLine($"Оставшееся здоровье врага: {enemy.CurrentHealth}");
                         Console.ReadKey();
-                        if (enemy.CurrentHealth <= 0 || CurrentHealth <= 0)
+                        if (enemy.CurrentHealth <= 0 )
                         {
                             Wins++;
                             Console.WriteLine("Вы победили противника " + Wins + " раз(а)");
@@ -83,12 +83,12 @@ class GameCharacter
                             Console.ReadKey();
                         }
                     }
-                    else
-                    Console.WriteLine("Врагов нет");
-                
-
-                
-
+                    else if (IsAlly == IsAlly)
+                    {
+                    Console.WriteLine("Это ваш тиммейт ");
+                    }
+                    else { }
+                    
                 }
                else
                {
@@ -97,7 +97,6 @@ class GameCharacter
         }
         
     }
-
 private void Move(List<GameCharacter> characters, int x, int y)
         {
         Console.Write("Введите новую координату X:");
