@@ -60,7 +60,7 @@ class GameCharacter
     }
     // Драка с врагом
 
-    private void Fight(List<GameCharacter> characters)
+        private void Fight(List<GameCharacter> characters)
     {
         foreach (GameCharacter enemy in characters)
         {
@@ -90,16 +90,10 @@ class GameCharacter
                 
 
                 }
-              
-                else
-                {
+               else
+               {
                     Console.WriteLine("На этих координатах никого нет");
-                }
-
-
-
-
-
+               }
         }
         
     }
